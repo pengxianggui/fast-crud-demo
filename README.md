@@ -1,6 +1,7 @@
 # Fast-Crud
 
 这是一个很强大的开发神器！帮助你5分钟实现一个功能强大、扩展性强的CRUD数据维护组件。
+> 注意：本项目只是fast-crud的demo演示项目，仅供项目集成参考。
 
 这是一个简单的demo:
 ![简单demo](./doc/easy_demo.png)
