@@ -1,0 +1,26 @@
+server:
+  port: ${SERVER_PORT:8080}
+spring:
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java #重启目录
+  datasource:
+    url: jdbc:mysql://${DB_IP:127.0.0.1}:${DB_PORT:3306}/fast-crud?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: ${DB_USER:root}
+    password: ${DB_PASS:123456}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+logging:
+  level:
+    root: info
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+fast-crud:
+  upload-dir: ${UPLOAD_DIR:${user.dir}/upload}

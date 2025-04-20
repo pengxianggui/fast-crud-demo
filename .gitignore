@@ -1,0 +1,4 @@
+.idea
+server/target
+web-ui/node_modules
+web-ui/dist

@@ -1,0 +1,47 @@
+import {fileURLToPath, URL} from 'node:url'
+
+import {defineConfig} from 'vite'
+import vue2 from '@vitejs/plugin-vue2'
+import vue2Jsx from '@vitejs/plugin-vue2-jsx'
+import Components from 'unplugin-vue-components/vite';
+import {ElementUiResolver} from 'unplugin-vue-components/resolvers';
+
+// https://vitejs.dev/config/
+export default defineConfig(({mode}) => {
+    return {
+        server: {
+            host: 'localhost',
+            port: 5173,
+            proxy: {
+                '/api': {
+                    target: 'http://localhost:8080',
+                    changeOrigin: true,
+                    rewrite: (path) => path.replace(/^\/api/, '')
+                }
+            }
+        },
+        plugins: [
+            vue2(), // vite为vue3而生, 配置此项支持vue2
+            vue2Jsx(), // 支持vue2中使用jsx语法
+            Components({
+                resolvers: [ElementUiResolver()], // 使得无需手动引入element-ui组件，自动识别按需引入
+            })
+        ],
+        resolve: {
+            alias: {
+                '@': fileURLToPath(new URL('./src', import.meta.url)), // 配置别名,简化导入时路径书写
+                // vue: 'vue/dist/vue.esm.js' // Vue 2.7 的完整 ESM 构建
+            }
+        },
+        build: {
+            outDir: mode === 'backend' ? '../demo/src/main/resources/static' : 'dist'
+        },
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    api: "modern-compiler"
+                }
+            }
+        }
+    }
+})
