@@ -1,4 +1,4 @@
 .idea
 server/target
-web-ui/node_modules
-web-ui/dist
+fast-crud-ui/node_modules
+fast-crud-ui/dist
