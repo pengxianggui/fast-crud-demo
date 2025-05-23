@@ -7,7 +7,7 @@ public class CodeGenerator {
     public static void main(String[] args) {
         CodeAutoGenerator.builder()
                 .author("pengxg")
-                .module("demo")//模块名
+                .module("server") // 模块名: maven多模块时
                 .url("jdbc:mysql://127.0.0.1:3306/fast-crud")
 //                .schema("fast-crud")
                 .username("root")

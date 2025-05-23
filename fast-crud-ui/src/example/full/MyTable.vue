@@ -238,7 +238,8 @@ export default {
       const {row, editRow, config, status} = fatRow
       this.$refs['fastTable'].updateForm(fatRow)
     },
-    handleAgeChange(age, {row, editRow, status, column, config, $index}) {
+    handleAgeChange(age, {row: {row, editRow, status, config}, column, $index}) {
+      console.log('age:', age);
       console.log('index:', $index);
       console.log('status:', status);
       console.log('editRow:', editRow);
