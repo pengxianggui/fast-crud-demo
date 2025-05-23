@@ -4,6 +4,10 @@
     <fast-table-column-img prop="avatarUrl" label="头像"/>
     <fast-table-column-number prop="age" label="年龄"/>
     <fast-table-column-select prop="sex" label="性别" :options="[{label: '男', value: '1'}, {label: '女', value: '0'}]"/>
+    <fast-table-column-select label="属国" prop="state" :options="stateOptions"
+                              val-key="code" label-key="name"
+                              :default-val_q="['1', '2', '3']"
+                              :disable-val="['4']"/>
     <fast-table-column-date-picker prop="createTime" label="创建时间" type="datetime" :editable="false"/>
     <template #button="scope">
       <el-button :size="scope.size" icon="el-icon-link" @click="expandButton(scope, 'code')">查看源码</el-button>
@@ -14,6 +18,7 @@
 
 <script>
 import {FastTableOption} from "fast-crud-ui";
+import staticDict from "@/example/full/dict";
 
 export default {
   name: "EasyDemo",
@@ -23,7 +28,8 @@ export default {
         module: 'student',
         sortField: 'createTime',
         sortDesc: true
-      })
+      }),
+      ...staticDict
     }
   },
   methods: {
