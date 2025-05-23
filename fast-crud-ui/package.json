@@ -13,7 +13,7 @@
     "axios": "^1.7.9",
     "vue": "^2.7.7",
     "element-ui": "^2.15.14",
-    "fast-crud-ui": "^1.1.6"
+    "fast-crud-ui": "^1.1.7"
   },
   "devDependencies": {
     "@types/node": "^16.11.45",

@@ -21,6 +21,8 @@ export default {
     return {
       tableOption: new FastTableOption({
         module: 'student',
+        sortField: 'createTime',
+        sortDesc: true
       })
     }
   },

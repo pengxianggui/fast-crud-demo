@@ -5,6 +5,10 @@ spring:
     restart:
       enabled: true
       additional-paths: src/main/java #重启目录
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
   datasource:
     url: jdbc:mysql://${DB_IP:127.0.0.1}:${DB_PORT:3306}/fast-crud?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: ${DB_USER:root}
@@ -24,3 +28,9 @@ mybatis-plus:
 
 fast-crud:
   upload-dir: ${UPLOAD_DIR:${user.dir}/upload}
+  # 服务地址(本地文件导出时等场景涉及)
+  host: ${HOST:http://localhost:8080}
+  upload:
+    mode: local
+    local:
+      dir: ${UPLOAD_DIR:${user.dir}/upload}
