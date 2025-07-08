@@ -1,9 +1,9 @@
 <template>
   <div class="demos">
 <!--    <H2>Easy Demo</H2>-->
-    <easy-demo></easy-demo>
+<!--    <easy-demo></easy-demo>-->
 <!--    <H2>Full Demo</H2>-->
-<!--    <full-demo></full-demo>-->
+    <full-demo></full-demo>
   </div>
 </template>
 

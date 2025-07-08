@@ -1,6 +1,6 @@
 <template>
   <fast-table :option="tableOption">
-    <fast-table-column-input prop="name" label="姓名"/>
+    <fast-table-column-input prop="name" label="姓名" :quick-filter="true"/>
     <fast-table-column-img prop="avatarUrl" label="头像"/>
     <fast-table-column-number prop="age" label="年龄"/>
     <fast-table-column-select prop="sex" label="性别" :options="[{label: '男', value: '1'}, {label: '女', value: '0'}]"/>
@@ -9,10 +9,10 @@
                               :default-val_q="['1', '2', '3']"
                               :disable-val="['4']"/>
     <fast-table-column-date-picker prop="createTime" label="创建时间" type="datetime" :editable="false"/>
-    <template #button="scope">
-      <el-button :size="scope.size" icon="el-icon-link" @click="expandButton(scope, 'code')">查看源码</el-button>
-      <el-button :size="scope.size" icon="el-icon-link" @click="expandButton(scope, 'doc')">查看文档</el-button>
-    </template>
+<!--    <template #button="scope">-->
+<!--      <el-button :size="scope.size" icon="el-icon-link" @click="expandButton(scope, 'code')">查看源码</el-button>-->
+<!--      <el-button :size="scope.size" icon="el-icon-link" @click="expandButton(scope, 'doc')">查看文档</el-button>-->
+<!--    </template>-->
   </fast-table>
 </template>
 

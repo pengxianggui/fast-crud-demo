@@ -27,7 +27,7 @@
                               :quick-filter="true" quick-filter-block quick-filter-checkbox
                               val-key="code" label-key="name"
                               :default-val_q="['1', '2', '3']"
-                              :disable-val="['4']"
+
                               required/>
     <fast-table-column label="仰慕者Id" prop="loveId"/>
     <fast-table-column-object label="仰慕者姓名" prop="loveName"
