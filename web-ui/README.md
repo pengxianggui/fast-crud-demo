@@ -47,7 +47,7 @@ import App from './App.vue'
 import ElementUI from 'element-ui'
 import "element-ui/lib/theme-chalk/index.css"
 import FastCrudUI from 'fast-crud-ui'
-import 'fast-crud-ui/lib/style.css'
+import 'web-ui/lib/style.css'
 import http from "@/http" // 假设这里可导入你的axios实例
 
 Vue.use(ElementUI)

@@ -74,7 +74,7 @@ export default {
 
 - **fast-crud-spring-boot-starter**: 主要引入此依赖
 - **fast-crud-auto-generator**: 基于mybatis-plus-generator封装的controller、service、serviceImpl、mapper、entity代码生成包，非必须。
-- **fast-crud-ui**: 前端组件库, README文档详见: [这里](./fast-crud-ui/README.md)
+- **fast-crud-ui**: 前端组件库, README文档详见: [这里](web-ui/README.md)
 - **demo**: 后端示例项目
 
 ## 版本
@@ -134,7 +134,7 @@ public class CodeGenerator {
 
 ### 前端引入(可选)
 
-详见[这里](./fast-crud-ui/README.md)
+详见[这里](web-ui/README.md)
 
 ## Roadmap
 
