@@ -77,7 +77,7 @@ new Vue({
 </template>
 
 <script>
-  import {FastTableOption} from "fast-crud-ui";
+  import {FastTableOption} from "fast-crud-ui3";
 
   export default {
     name: "EasyDemo",

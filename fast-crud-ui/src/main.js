@@ -1,18 +1,23 @@
-import Vue from 'vue'
-import ElementUI from 'element-ui'
+import {createApp} from 'vue'
+import ElementPlus from 'element-plus'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import App from './App.vue'
-import "element-ui/lib/theme-chalk/index.css";
-import 'fast-crud-ui/lib/style.css'
+import "element-plus/theme-chalk/index.css"
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
+import 'fast-crud-ui3/lib/style.css'
 import '@/assets/index.scss'
-import FastCrudUI from 'fast-crud-ui'
-import http from "@/http";
+import FastCrudUI from 'fast-crud-ui3'
+import http from "@/http"
 
-
-Vue.use(ElementUI)
-Vue.use(FastCrudUI, {
+const app = createApp(App)
+app.use(ElementPlus, {
+    locale: zhCn
+})
+app.use(FastCrudUI, {
     $http: http
 })
-
-new Vue({
-    render: (h) => h(App)
-}).$mount('#app')
+// 注册element-plus图标
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+    app.component(key, component)
+}
+app.mount('#app')

@@ -2,7 +2,7 @@
   <div class="demo">
     <div class="param">
       <h5>行为配置</h5>
-      <el-switch size="mini" v-model="params.editType" @change="(val) => updateOption('editType', val)"
+      <el-switch size="small" v-model="params.editType" @change="(val) => updateOption('editType', val)"
                  inactive-value="inline" inactive-color="#13ce66" inactive-text="行内编辑"
                  active-value="form" active-color="#ff4949" active-text="表单编辑"></el-switch>
       <el-checkbox v-model="params.pageLoadable">允许加载分页</el-checkbox>
@@ -22,12 +22,11 @@
       <h5>外观配置</h5>
       <div class="line">
         <label>尺寸</label>
-        <fast-select class="comp" size="mini" v-model="params.size" @change="(val) => updateOptionStyle('size', val)"
-                     :options="[{label:'超小',value: 'mini'}, {label:'小',value: 'small'}, {label:'中等',value: 'medium'}, {label:'大', value: 'default'}]"></fast-select>
+        <fast-select class="comp" size="small" :options="sizeOptions" v-model="params.size" @change="(val) => updateOptionStyle('size', val)"/>
       </div>
       <div class="line">
         <label>行高</label>
-        <el-slider class="comp" v-model="params.bodyRowHeight" :min="40" :max="100"
+        <el-slider class="comp" v-model="params.bodyRowHeight" :min="30" :max="100"
                    @change="(val) => updateOptionStyle('bodyRowHeight', val + 'px')"></el-slider>
       </div>
       <el-checkbox v-model="params.fixedAvatar">固定头像列</el-checkbox>
@@ -54,18 +53,20 @@
       <el-checkbox v-model="params.noEditLuckWhenAgeGT35">超35岁不允许编辑幸运时刻</el-checkbox>
     </div>
 
-    <my-table ref="myTable" :params="params"></my-table>
+    <my-table ref="myTable" :params="params" class="table"></my-table>
   </div>
 </template>
 
 <script>
 import MyTable from "./MyTable.vue";
+import staticDict from './dict'
 
 export default {
   name: "FastTableDemo",
   components: {MyTable},
   data() {
     return {
+      sizeOptions: staticDict.sizeOptions,
       params: {
         editType: 'inline',
         // 允许分页加载
@@ -83,7 +84,7 @@ export default {
         // 启用双击编辑
         enableDblClickEdit: true,
         // 默认尺寸
-        size: 'medium',
+        size: 'default',
         bodyRowHeight: 45,
         // 表格高度弹性自适应
         flexHeight: true,
@@ -173,6 +174,10 @@ export default {
         width: 100%;
       }
     }
+  }
+
+  .table {
+    flex: 1;
   }
 }
 </style>
