@@ -156,14 +156,14 @@ export default {
         style: {
           flexHeight: true,
           size: 'default', // small,default,large
-          bodyRowHeight: '45px',
-          formLabelWidth: 'auto', // 默认为auto
+          bodyRowHeight: '45px', // 行高
+          formLabelWidth: 'auto', // 表单label宽度，默认为auto。影响的地方有弹窗表单、快筛表单
           formLayout: 'id,avatarUrl, name|age|sex, graduated|state|state, loveId|loveName|loveName, info, birthday|luckTime, resumeUrl, createTime', // 弹窗表单布局设置
-          quickFilterSpan: 3
+          quickFilterSpan: 3 // 快筛每行几列
         },
         beforeReset({query}) {
           this.customQueryParam.keyword = null // 重置自定义筛选项
-          return Promise.resolve()
+          return Promise.resolve() // 若reject则取消重置
         },
         /**
          * 典型场景: 追加筛选条件
@@ -182,14 +182,14 @@ export default {
           if (this.params.loadSuccessTip) {
             this.showMsg('success', '分页加载成功!')
           }
-          return Promise.resolve(res);
+          return Promise.resolve(res); // 必须resolve res
         },
         loadFail({query, error}) {
           if (this.params.customLoadFailTip) {
             this.showMsg('error', '哦豁, 分页加载失败了:' + JSON.stringify(error));
-            return Promise.reject();
+            return Promise.reject(); // 可以通过reject覆盖默认的加载失败提示
           }
-          return Promise.resolve(); // 可以通过reject覆盖默认的加载失败提示
+          return Promise.resolve();
         },
         beforeInsert({fatRows, rows, editRows}) {
           if (editRows.findIndex(r => r.name === '司马懿') > -1 && this.params.disableInsertSmy) {
@@ -274,8 +274,8 @@ export default {
         module: 'student',
         conds: [
           // 预筛
-          // {col: 'name', opt: '=', val: '利威尔'} // 写法一
-          // new Cond('name', 'like', '利威尔') // 写法二
+          // {col: 'name', opt: '=', val: '曹操'} // 写法一
+          // new Cond('name', 'like', '曹操') // 写法二
         ],
         render() {
           return [
