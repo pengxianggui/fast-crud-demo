@@ -1,66 +1,51 @@
 # Fast-Crud
 
-这是一个很强大的开发神器！帮助你5分钟实现一个功能强大、扩展性强的CRUD数据维护组件。
-> 注意：本项目只是fast-crud的demo演示项目，仅供项目集成参考。
-
-这是一个简单的demo:
-![简单demo](./doc/easy_demo.png)
-
-这是一个相对复杂点的demo(包括了如何扩展演示):
-![完整demo](./doc/full_demo.png)
-
-无论简单、还是复杂，这都只需要5分钟！
+注意：本项目只是fast-crud的demo演示项目，仅供项目集成参考。
 
 ## 介绍
 
-> 基于spring-boot、spring-mvc、mybatis-plus的代码生成式 + 动态crud注册的快速开发框架。
-
-应用本框架的前提是你的项目必须使用以上三个框架。
-
 - 文档参考[这里](http://pengxg.cc/tags/fast-crud)
-- DEMO参考[这里](http://fastcrud.pengxg.cc/)
+- 在线DEMO参考[这里](http://fastcrud.pengxg.cc/)
 
 ## 展示
 
-仅使用如下代码:
+前端仅使用如下代码:
 
 ```vue
+
 <template>
   <fast-table :option="tableOption">
     <fast-table-column-input prop="name" label="姓名"/>
     <fast-table-column-img prop="avatarUrl" label="头像"/>
     <fast-table-column-number prop="age" label="年龄"/>
-    <fast-table-column-select prop="sex" label="性别" :options="[{label: '男', value: '1'}, {label: '女', value: '0'}]"/>
+    <fast-table-column-select prop="sex" label="性别"
+                              :options="[{label: '男', value: '1'}, {label: '女', value: '0'}]"/>
     <fast-table-column-date-picker prop="createTime" label="创建时间" type="datetime" :editable="false"/>
-    <template #button="scope">
-      <el-button :size="scope.size" icon="el-icon-link" @click="expandButton(scope, 'code')">查看源码</el-button>
-      <el-button :size="scope.size" icon="el-icon-link" @click="expandButton(scope, 'doc')">查看文档</el-button>
-    </template>
   </fast-table>
 </template>
 
 <script>
-import {FastTableOption} from "../../../packages";
+  import {FastTableOption} from "../../../packages";
 
-export default {
-  name: "EasyDemo",
-  data() {
-    return {
-      tableOption: new FastTableOption({
-        module: 'student',
-      })
-    }
-  },
-  methods: {
-    expandButton({choseRow, checkedRows, editRows}, type) {
-      if (type === 'code') {
-        window.open('https://github.com/pengxianggui/fast-crud/blob/main/fast-crud-ui/src/example/easy/EasyDemo.vue', '_blank')
-      } else if (type === 'doc') {
-        window.open('http://pengxg.cc/tags/fast-crud', '_blank')
+  export default {
+    name: "EasyDemo",
+    data() {
+      return {
+        tableOption: new FastTableOption({
+          module: 'student',
+        })
+      }
+    },
+    methods: {
+      expandButton({choseRow, checkedRows, editRows}, type) {
+        if (type === 'code') {
+          window.open('https://github.com/pengxianggui/fast-crud-demo/blob/main/web-ui/src/example/easy/EasyDemo.vue', '_blank')
+        } else if (type === 'doc') {
+          window.open('http://pengxg.cc/tags/fast-crud', '_blank')
+        }
       }
     }
   }
-}
 </script>
 ```
 
@@ -70,22 +55,6 @@ export default {
 更完整的demo(包括如何扩展):
 ![完整demo](./doc/full_demo.png)
 
-## 模块介绍
-
-- **fast-crud-spring-boot-starter**: 主要引入此依赖
-- **fast-crud-auto-generator**: 基于mybatis-plus-generator封装的controller、service、serviceImpl、mapper、entity代码生成包，非必须。
-- **fast-crud-ui**: 前端组件库, README文档详见: [这里](web-ui/README.md)
-- **demo**: 后端示例项目
-
-## 版本
-
-- **spring-boot**: 2.6.8
-- **mybatis-plus**: 3.5.7, 更高版本会存在一些问题
-- **knife4j**: 3.0.3
-- **hutool-core**: 5.8.8
-- **hutool-extra**: 5.8.8
-- **freemarker**: 2.3.31
-
 ## 使用方式
 
 ### 后端集成
@@ -93,12 +62,14 @@ export default {
 #### 引入maven依赖
 
 ```xml
+
 <dependencies>
     <dependency>
         <groupId>io.github.pengxianggui</groupId>
         <artifactId>fast-crud-spring-boot-starter</artifactId>
         <version>${version}</version>
     </dependency>
+    <!-- 下面这个可选 -->
     <dependency>
         <groupId>io.github.pengxianggui</groupId>
         <artifactId>fast-crud-auto-generator</artifactId>
@@ -107,9 +78,7 @@ export default {
 </dependencies>
 ```
 
-> 具体版本号请查看pom.xml
-
-#### 代码生成准备
+#### 代码生成准备(可选)
 
 手撸一个main方法
 
@@ -130,9 +99,9 @@ public class CodeGenerator {
 ```
 
 > 运行这个main方法，会交互式询问要针对哪个表生成代码文件，可选择性生成对应的controller、service、serviceImpl、mapper以及mapper.xml。
-> 且生成的controller方法已具备crud相关接口(由于几个标准接口是动态注册的, 所以controller类里不会体现, 可在swagger中查看)
+> 且生成的controller方法已具备crud相关接口
 
-### 前端引入(可选)
+### 前端引入
 
 详见[这里](web-ui/README.md)
 
@@ -160,7 +129,8 @@ public class CodeGenerator {
 ##### 查询(R)
 
 - [X]  **快筛**：表单形式的筛选，特点：快速。基于表格列定义 quicker-filter 自动生成, 并支持自定义开发
-- [X]  **简筛**：单一输入框的简单筛选，特点：简单。基于表格列定义 filter 自动生成的简单筛选，每次只能针对一个属性(可切换属性)。
+- [X]  **简筛**：单一输入框的简单筛选，特点：简单。基于表格列定义 filter 自动生成的简单筛选，每次只能针对一个属性(
+  可切换属性)。
 - [X]  **动筛**：基于表头的动态筛选，特点：筛选项可动态增减。每一列的表头支持点击弹窗输入过滤，支持：
 - [X]  普通字符串模糊匹配(通过=前缀的精准匹配)
 - [X]  枚举类型(下拉单选/checkbox多选)的精准匹配
@@ -189,16 +159,11 @@ public class CodeGenerator {
 ### 2.x 版本：CRUD的外围扩展
 
 - [ ]  批量修改: 选择要修改的行，弹窗输入要修改的字段和值, 批量更新这些行(输入一次值即可作用所有选中行)
-- [ ]  xlsx数据导出功能: 导出当前筛选条件下的当前页数据/全部数据，可勾选字段
+- [x]  xlsx数据导出功能: 导出当前筛选条件下的当前页数据/全部数据，可勾选字段
 - [ ]  **存筛**：应用已保存的筛选条件进行筛选，下拉按钮菜单，特点：针对已保存的组合筛选条件进行筛选。
-- [ ]  可针对当前搜索条件进行前端保存并加入到快筛菜单按钮里
-- [ ]  点击快筛中的下拉菜单，可快速基于其所保存的筛选条件进行过滤
-- [ ]  快筛应用前, 应当做兼容性校验：字段、字段类型需和当前表格列一致,否则提示并删除此快筛项
-- [ ]  针对快筛应用时,应当将过滤条件回显在表单搜索和表头过滤中,并支持二次编辑,此时应当显示针对当前快筛的两个操作按钮:
-  删除和保存
-- [ ]  表格自定义配置
+- [ ]  表格自定义配置(设置列宽、冻结等用户个性化设置)
 - [ ]  支持针对mapping.js进行扩展，以便自定义增加新的FastTableColumn*组件
-- [ ]  **高级筛选**: 支持类似jira中jql的使用方式。
+- [ ]  ~~**高级筛选**: 支持类似jira中jql的使用方式。~~
 
 ## ChangeLog
 
