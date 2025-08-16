@@ -34,7 +34,7 @@ export default defineConfig(({mode}) => {
             }
         },
         build: {
-            outDir: mode === 'backend' ? '../demo/src/main/resources/static' : 'dist'
+            outDir: mode === 'backend' ? '../server/src/main/resources/static' : 'dist'
         },
         css: {
             preprocessorOptions: {

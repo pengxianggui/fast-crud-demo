@@ -1,5 +1,6 @@
 package io.github.pengxianggui.crud.demo.domain;
 
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -28,7 +29,7 @@ public class Student {
     @ApiModelProperty("头像地址")
     private String avatarUrl;
 
-    @TableField(typeHandler = FileItemTypeHandler.class, jdbcType = JdbcType.VARCHAR)
+    @TableField(typeHandler = FileItemTypeHandler.class, jdbcType = JdbcType.VARCHAR, updateStrategy = FieldStrategy.ALWAYS)
     @ApiModelProperty("相册")
     private List<FileItem> gallery;
 

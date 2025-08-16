@@ -112,6 +112,7 @@ export default {
         insertable: true,
         updatable: true,
         deletable: true,
+        createTimeField: 'createTime', // 审计字段——创建时间
         sortField: 'createTime',
         sortDesc: true,
         moreButtons: [
@@ -391,7 +392,7 @@ export default {
       if (type === 'code') {
         window.open('https://github.com/pengxianggui/fast-crud-demo/blob/main/web-ui/src/example/easy/EasyDemo.vue', '_blank')
       } else if (type === 'doc') {
-        window.open('http://pengxg.cc/tags/fast-crud', '_blank')
+        window.open('http://fastcrud-doc.pengxg.cc/', '_blank')
       }
     },
     tryPick(multiple) {
@@ -425,11 +426,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.sick-msg {
-  position: absolute;
-  left: 0;
-}
-:deep(.fc-fast-table-operation-bar) {
-  //height: 50px;
-}
+//.sick-msg {
+//  position: absolute;
+//  left: 0;
+//}
+//:deep(.fc-fast-table-operation-bar) {
+//  height: 50px;
+//}
 </style>

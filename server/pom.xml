@@ -14,7 +14,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <fast-crud.version>1.5.0-SNAPSHOT</fast-crud.version>
+        <fast-crud.version>1.5.2</fast-crud.version>
         <spring-boot.version>2.6.8</spring-boot.version>
     </properties>
 
@@ -125,6 +125,15 @@
                             <port>8080</port>
                         </ports>
                     </container>
+                    <!-- 强制添加 target/classes 以确保 static 被带上 -->
+                    <extraDirectories>
+                        <paths>
+                            <path>
+                                <from>${project.build.outputDirectory}</from>
+                                <into>/app/classes</into>
+                            </path>
+                        </paths>
+                    </extraDirectories>
                     <outputPaths>
                         <tar>target/${project.artifactId}.tar</tar>
                     </outputPaths>
