@@ -15,6 +15,8 @@
       </el-checkbox>
       <el-checkbox v-model="params.enableMulti" @change="(val) => updateOption('enableMulti', val)">启用多选
       </el-checkbox>
+      <el-checkbox v-model="params.enableIndex" @change="(val) => updateOption('enableIndex', val)">启用序号列
+      </el-checkbox>
       <el-checkbox v-model="params.enableDblClickEdit" @change="(val) => updateOption('enableDblClickEdit', val)">
         启用双击编辑
       </el-checkbox>
@@ -85,6 +87,8 @@ export default {
         enableColumnFilter: true,
         // 启用多选
         enableMulti: true,
+        // 启用序号列
+        enableIndex: true,
         // 启用双击编辑
         enableDblClickEdit: true,
         // 启用快筛项级联(蜀国和仰慕者)
