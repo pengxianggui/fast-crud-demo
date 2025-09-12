@@ -88,7 +88,7 @@ export default {
         // 启用多选
         enableMulti: true,
         // 启用序号列
-        enableIndex: true,
+        enableIndex: false,
         // 启用双击编辑
         enableDblClickEdit: true,
         // 启用快筛项级联(蜀国和仰慕者)
