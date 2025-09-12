@@ -18,6 +18,9 @@
       <el-checkbox v-model="params.enableDblClickEdit" @change="(val) => updateOption('enableDblClickEdit', val)">
         启用双击编辑
       </el-checkbox>
+      <el-checkbox v-model="params.enableCascading" @change="(val) => updateOption('enableCascading', val)">
+        快筛项级联(属国/仰慕者)
+      </el-checkbox>
 
       <h5>外观配置</h5>
       <div class="line">
@@ -59,11 +62,12 @@
 
 <script>
 import MyTable from "./MyTable.vue";
+import {FastSelect} from "fast-crud-ui3";
 import staticDict from './dict'
 
 export default {
   name: "FastTableDemo",
-  components: {MyTable},
+  components: {FastSelect, MyTable},
   data() {
     return {
       sizeOptions: staticDict.sizeOptions,
@@ -83,6 +87,8 @@ export default {
         enableMulti: true,
         // 启用双击编辑
         enableDblClickEdit: true,
+        // 启用快筛项级联(蜀国和仰慕者)
+        enableCascading: true,
         // 默认尺寸
         size: 'default',
         bodyRowHeight: 45,

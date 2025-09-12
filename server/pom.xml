@@ -14,7 +14,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <fast-crud.version>1.5.4</fast-crud.version>
+        <fast-crud.version>1.5.5</fast-crud.version>
         <spring-boot.version>2.6.8</spring-boot.version>
     </properties>
 

@@ -7,25 +7,26 @@
               @selection-change="handleSelectionChange"
               @select-all="handleSelectAll">
     <template #quickFilter="{size}">
-      <el-form-item label="自定义筛选项">
+      <el-form-item label="自定义筛选项" style="grid-area: c1;/*grid-column: c2/c3*/">
         <el-input :size="size" v-model="customQueryParam.keyword" placeholder="同时筛选姓名和仰慕者姓名"/>
       </el-form-item>
     </template>
     <fast-table-column label="ID" prop="id"/>
     <fast-table-column-img label="头像" prop="avatarUrl" :fixed="params.fixedAvatar" :filter="false" required/>
-    <fast-table-column-img prop="gallery" label="相册" :multiple="true" :limit="10"
+    <fast-table-column-img prop="gallery" label="相册" filter width="300px"
+                           :multiple="true" :limit="10"
                            :before-remove="handleGalleryBeforeRemove"
                            :on-success="handleGalleryUploadSuccess"
                            :on-remove="handleGalleryRemove"
                            :response-handler="handleGalleryResponseHandle"
-                           :on-change="handleGalleryChange"
-                           width="300px"/>
-    <fast-table-column-input label="姓名" prop="name" first-filter required/>
-    <fast-table-column-number label="年龄" prop="age" required quick-filter
-                              :min="18" :max="60"
-                              :rules="[{type: 'number', min: 18, max: 60, message: '年龄必须在[18,60]之间'}]"
+                           :on-change="handleGalleryChange"/>
+    <fast-table-column-input label="姓名" prop="name" :filter="0" required/>
+    <fast-table-column-number label="年龄" prop="age" required :quick-filter="3"
+                              :rules="[{type: 'number', min: 16, max: 60, message: '年龄必须在[16,60]之间'}]"
+                              :min="16" :max="60"
                               @change="handleAgeChange"/>
-    <fast-table-column-select label="性别" prop="sex" :options="sexOptions" :multiple_q="true" quick-filter required>
+    <fast-table-column-select label="性别" prop="sex" :quick-filter="1" required
+                              :options="sexOptions" :multiple_q="true">
       <template #header="{column, $index}">
         <span>{{ $index + '.' + column.label }}</span>
       </template>
@@ -35,26 +36,26 @@
         <span v-else></span>
       </template>
     </fast-table-column-select>
-    <fast-table-column-select label="属国" prop="state" :options="stateOptions"
-                              :quick-filter="true" quick-filter-block quick-filter-checkbox
-                              val-key="code" label-key="name"
-                              :default-val_q="['1', '2', '3']"
-                              :disable-val="['4']"
-                              required/>
-    <fast-table-column label="仰慕者Id" prop="loveId"/>
-    <fast-table-column-object label="仰慕者姓名" prop="loveName"
-                              :table-option="loveOption" show-field="name" :pick-map="{id: 'loveId'}"/>
-    <fast-table-column-textarea label="简介" prop="info"/>
-    <fast-table-column-switch label="已毕业" prop="graduated" active-text="Y" inactive-text="N" quick-filter required/>
-    <fast-table-column-time-picker label="幸运时刻" prop="luckTime" width="120px"
-                                   :editable="({editRow}) => !(editRow.age > 35)" required/>
-    <fast-table-column-date-picker label="生日" prop="birthday" quick-filter
-                                   :disabled-date="(time) => time.getTime() > Date.now()"
-                                   required/>
+    <fast-table-column-select label="属国" prop="state" required :quick-filter="true" quick-filter-block
+                              :options="stateOptions" quick-filter-checkbox val-key="code" label-key="name"
+                              :default-val_q="['1', '2', '3']" :disable-val="['4']"/>
+    <fast-table-column-object label="仰慕者" prop="loveId" quick-filter
+                              :quick-filter-config="loveIdQuickFilterConfig"
+                              :table-option="loveOption" val-key="id" label-key_q="name" :pick-map="{name: 'loveName'}"
+                              :multiple_q="true"/>
+    <fast-table-column label="仰慕者姓名" prop="loveName"/>
+    <fast-table-column-textarea label="简介" prop="info" link="withdrawSampleDetail?id={id}&pageType=detail"
+                                :show-length="20"/>
+    <fast-table-column-switch label="已毕业" prop="graduated" required
+                              active-text="Y" inactive-text="N" quick-filter/>
+    <fast-table-column-time-picker label="幸运时刻" prop="luckTime" width="120px" required
+                                   :editable="({editRow}) => !(editRow.age > 35)"/>
+    <fast-table-column-date-picker label="生日" prop="birthday" quick-filter required
+                                   :disabled-date="(time) => time.getTime() > Date.now()"/>
     <fast-table-column-file label="简历" prop="resumeUrl" :multiple="true" :limit="3" :show-overflow-tooltip="false"/>
-    <fast-table-column-input prop="idCard" label="身份证号" min-width="180px" />
+    <fast-table-column-input prop="idCard" label="身份证号" min-width="180px"/>
     <fast-table-column-input prop="address" label="地址" min-width="200px"/>
-    <fast-table-column-input prop="phone" label="联系电话" min-width="150px" />
+    <fast-table-column-input prop="phone" label="联系电话" min-width="150px"/>
     <fast-table-column-date-picker label="创建时间" prop="createTime" width="200px"
                                    :disabled-date_q="(time) => time.getTime() > Date.now()"
                                    type="datetime"
@@ -69,12 +70,12 @@
     <template #button="scope">
       <el-button :size="scope.size" @click="tryPick(false)">Try Pick</el-button>
       <el-button :size="scope.size" @click="tryPick(true)">Try Pick(多选)</el-button>
-<!--      <div class="sick-msg">这是一段提示</div>-->
+      <!--      <div class="sick-msg">这是一段提示</div>-->
     </template>
     <template #foot="scope">
       <div>
-        <el-button :size="scope.size" icon="Link" @click="expandButton(scope, 'code')">查看源码</el-button>
-        <el-button :size="scope.size" icon="Link" @click="expandButton(scope, 'doc')">查看文档</el-button>
+        <el-button :size="scope.size" type="primary" @click="expandButton(scope, 'code')" plain>查看源码</el-button>
+        <el-button :size="scope.size" :icon="Link" @click="expandButton(scope, 'doc')">查看文档</el-button>
       </div>
     </template>
   </fast-table>
@@ -83,12 +84,19 @@
 <script>
 import {h, markRaw} from 'vue'
 import {ElMessage, ElMessageBox} from 'element-plus';
-import {Cpu, Plus} from "@element-plus/icons-vue";
-import {FastTableColumnImg, FastTableColumn, FastTableOption, util} from 'fast-crud-ui3';
+import {FastTableColumnImg, FastTableColumn, FastTableColumnSelect, FastTableOption, util} from "fast-crud-ui3";
 import staticDict from './dict'
+import {Cpu, Link, Plus} from "@element-plus/icons-vue";
+import CodeBox from "@/example/CodeBox.vue";
+import getSourceCode from '../code'
 
 export default {
   name: "MyTable",
+  computed: {
+    Link() {
+      return Link
+    }
+  },
   props: {
     params: Object
   },
@@ -106,15 +114,21 @@ export default {
         module: 'student', // 配置了这个, 默认分页接口就是: /student/page, 新增接口就是: /student/insert, 其它同理
         enableDblClickEdit: true,
         enableMulti: true,
+        enableIndex: true,
         enableColumnFilter: true,
         lazyLoad: false,
         editType: 'inline', // 默认inline
-        insertable: true,
+        // insertable: true,
+        insertable: (scope) => true, // 支持一个返回布尔的函数
         updatable: true,
         deletable: true,
         createTimeField: 'createTime', // 审计字段——创建时间
-        sortField: 'createTime',
-        sortDesc: true,
+        // sortField: 'createTime', // 默认为createTimeField值
+        // sortDesc: true, // 默认为true
+        condGroups: [ // 开发预置条件组——存筛
+          {label: '成年男性', conds: [{col: 'age', opt: '>', val: 18}, {col: 'sex', opt: 'in', val: ['1']}]},
+          {label: '吴国女性', conds: [{col: 'state', opt: 'in', val: ['3']}, {col: 'sex', opt: 'in', val: ['0']}]}
+        ],
         moreButtons: [
           {
             // 这是一个完整的配置，其中: label、click是必须的
@@ -131,7 +145,7 @@ export default {
           },
           {
             label: '插入多行(带默认值)',
-            click: (scope) => this.$refs['fastTable'].addRows([{name: '貂蝉', age: 21},{name: '吕布', age: 27}])
+            click: (scope) => this.$refs['fastTable'].addRows([{name: '貂蝉', age: 21}, {name: '吕布', age: 27}])
           },
           {
             label: '弹窗新增',
@@ -157,14 +171,14 @@ export default {
         style: {
           flexHeight: true,
           size: 'default', // small,default,large
-          bodyRowHeight: '45px', // 行高
-          formLabelWidth: 'auto', // 表单label宽度，默认为auto。影响的地方有弹窗表单、快筛表单
+          bodyRowHeight: '45px',
+          formLabelWidth: 'auto', // 默认为auto
           formLayout: 'id,avatarUrl, name|age|sex, graduated|state|state, loveId|loveName|loveName, info, birthday|luckTime, resumeUrl, createTime', // 弹窗表单布局设置
-          quickFilterSpan: 3 // 快筛每行几列
+          quickFilterSpan: 3
         },
         beforeReset({query}) {
           this.customQueryParam.keyword = null // 重置自定义筛选项
-          return Promise.resolve() // 若reject则取消重置
+          return Promise.resolve()
         },
         /**
          * 典型场景: 追加筛选条件
@@ -183,14 +197,14 @@ export default {
           if (this.params.loadSuccessTip) {
             this.showMsg('success', '分页加载成功!')
           }
-          return Promise.resolve(res); // 必须resolve res
+          return Promise.resolve(res);
         },
         loadFail({query, error}) {
           if (this.params.customLoadFailTip) {
             this.showMsg('error', '哦豁, 分页加载失败了:' + JSON.stringify(error));
-            return Promise.reject(); // 可以通过reject覆盖默认的加载失败提示
+            return Promise.reject();
           }
-          return Promise.resolve();
+          return Promise.resolve(); // 可以通过reject覆盖默认的加载失败提示
         },
         beforeInsert({fatRows, rows, editRows}) {
           if (editRows.findIndex(r => r.name === '司马懿') > -1 && this.params.disableInsertSmy) {
@@ -273,22 +287,42 @@ export default {
       }),
       loveOption: new FastTableOption({
         module: 'student',
+        title: '人员列表',
         conds: [
           // 预筛
-          // {col: 'name', opt: '=', val: '曹操'} // 写法一
-          // new Cond('name', 'like', '曹操') // 写法二
+          // {col: 'name', opt: '=', val: '利威尔'} // 写法一
+          // new Cond('name', 'like', '利威尔') // 写法二
         ],
-        render() {
+        render: () => {
           return [
             h(FastTableColumn, {prop: 'id', label: 'id'}),
             h(FastTableColumnImg, {prop: 'avatarUrl', label: '头像'}),
-            h(FastTableColumn, {prop: 'name', label: '姓名1', firstFilter: true})
+            h(FastTableColumn, {prop: 'name', label: '姓名1', filter: 0}),
+            h(FastTableColumnSelect, {
+              prop: 'state',
+              label: '蜀国',
+              options: this.stateOptions,
+              valKey: "code",
+              labelKey: "name"
+            })
           ]
         }
       }),
       tableKey: 0,
       defaultQueryOfCreatedTime: [monthAgo, now],
-      ...staticDict
+      ...staticDict,
+      loveIdQuickFilterConfig: {
+        onClick: (model, filter, filtersMap) => {
+          if (this.params.enableCascading === true && !util.isEmpty(model.state)) {
+            filter.props.tableOption.addCond({col: 'state', opt: 'in', val: model.state})
+          } else {
+            filter.props.tableOption.removeCond('state')
+          }
+        },
+        onChange: (val, model, filter, filtersMap) => {
+          ElMessage.info(`仰慕者快筛项值更新:${val}`)
+        }
+      }
     }
   },
   methods: {
@@ -390,9 +424,18 @@ export default {
     },
     expandButton({choseRow, checkedRows, editRows}, type) {
       if (type === 'code') {
-        window.open('https://github.com/pengxianggui/fast-crud-demo/blob/main/web-ui/src/example/easy/EasyDemo.vue', '_blank')
+        util.openDialog({
+          component: CodeBox,
+          props: {
+            modelValue: getSourceCode()
+          },
+          dialogProps: {
+            title: '源码',
+            width: '80%'
+          }
+        })
       } else if (type === 'doc') {
-        window.open('http://fastcrud-doc.pengxg.cc/', '_blank')
+        window.open('http://pengxg.cc/tags/fast-crud', '_blank')
       }
     },
     tryPick(multiple) {
@@ -426,11 +469,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
-//.sick-msg {
-//  position: absolute;
-//  left: 0;
-//}
-//:deep(.fc-fast-table-operation-bar) {
-//  height: 50px;
-//}
+.sick-msg {
+  position: absolute;
+  left: 0;
+}
+
+:deep(.fc-fast-table-operation-bar) {
+  //height: 50px;
+}
 </style>
