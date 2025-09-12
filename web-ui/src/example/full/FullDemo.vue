@@ -39,7 +39,7 @@
         表格高度弹性自适应
       </el-checkbox>
 
-      <h5>钩子函数应用</h5>
+      <h5>钩子函数</h5>
       <el-checkbox v-model="params.loadSuccessTip">分页加载成功提示</el-checkbox>
       <el-checkbox v-model="params.customLoadFailTip">自定义加载失败提示</el-checkbox>
       <el-checkbox v-model="params.notDelete">不能删除诸葛亮(不弹窗)</el-checkbox>
