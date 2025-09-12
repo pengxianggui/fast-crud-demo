@@ -435,7 +435,7 @@ export default {
           }
         })
       } else if (type === 'doc') {
-        window.open('http://pengxg.cc/tags/fast-crud', '_blank')
+        window.open('http://fastcrud-doc.pengxg.cc', '_blank')
       }
     },
     tryPick(multiple) {
