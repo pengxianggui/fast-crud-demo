@@ -6,9 +6,9 @@
               @select="handleSelect"
               @selection-change="handleSelectionChange"
               @select-all="handleSelectAll">
-    <template #quickFilter="{size}">
+    <template #quickFilter="{size, query}">
       <el-form-item label="自定义筛选项" style="grid-area: c1;/*grid-column: c2/c3*/">
-        <el-input :size="size" v-model="customQueryParam.keyword" placeholder="同时筛选姓名和仰慕者姓名"/>
+        <el-input :size="size" v-model="query.extra.keyword" placeholder="同时筛选姓名和仰慕者姓名"/>
       </el-form-item>
     </template>
     <fast-table-column label="ID" prop="id"/>
@@ -105,9 +105,6 @@ export default {
     const monthAgo = new Date();
     monthAgo.setTime(monthAgo.getTime() - 3600 * 1000 * 24 * 30);
     return {
-      customQueryParam: {
-        keyword: null
-      },
       tableOption: new FastTableOption({
         context: this, // important! 否则钩子函数里无法获取当当前组件实例上下文
         title: '',
@@ -129,6 +126,9 @@ export default {
           {label: '成年男性', conds: [{col: 'age', opt: '>', val: 18}, {col: 'sex', opt: 'in', val: ['1']}]},
           {label: '吴国女性', conds: [{col: 'state', opt: 'in', val: ['3']}, {col: 'sex', opt: 'in', val: ['0']}]}
         ],
+        condExtra: {
+          keyword: null
+        },
         moreButtons: [
           {
             // 这是一个完整的配置，其中: label、click是必须的
@@ -176,10 +176,6 @@ export default {
           formLayout: 'id,avatarUrl, name|age|sex, graduated|state|state, loveId|loveName|loveName, info, birthday|luckTime, resumeUrl, createTime', // 弹窗表单布局设置
           quickFilterSpan: 3
         },
-        beforeReset({query}) {
-          this.customQueryParam.keyword = null // 重置自定义筛选项
-          return Promise.resolve()
-        },
         /**
          * 典型场景: 追加筛选条件
          * @param query
@@ -187,7 +183,6 @@ export default {
          */
         beforeLoad({query}) {
           if (this.params.pageLoadable) {
-            query.extra.keyword = this.customQueryParam.keyword
             return Promise.resolve();
           }
           this.showMsg('warning', '未勾选【允许加载分页】, 不会分页请求')
