@@ -11,7 +11,7 @@
         <el-input :size="size" v-model="query.extra.keyword" placeholder="同时筛选姓名和仰慕者姓名"/>
       </el-form-item>
     </template>
-    <fast-table-column label="ID" prop="id"/>
+    <fast-table-column label="ID" prop="id" :dynamic-filter="false" :quick-filter="true"/>
     <fast-table-column-img label="头像" prop="avatarUrl" :fixed="params.fixedAvatar" :filter="false" required/>
     <fast-table-column-img prop="gallery" label="相册" filter width="300px"
                            :multiple="true" :limit="10"
@@ -41,9 +41,11 @@
                               :default-val_q="['1', '2', '3']" :disable-val="['4']"/>
     <fast-table-column-object label="仰慕者" prop="loveId" quick-filter
                               :quick-filter-config="loveIdQuickFilterConfig"
-                              :table-option="loveOption" val-key="id" label-key_q="name" :pick-map="{name: 'loveName'}"
+                              :table-option="personOption" val-key="id" label-key_q="name" :pick-map="{name: 'loveName'}"
                               :multiple_q="true"/>
     <fast-table-column label="仰慕者姓名" prop="loveName"/>
+    <fast-table-column-select label="仇人" prop="foeId" quick-filter :options="personOption" width="100"
+                              val-key="id" label-key="name" />
     <fast-table-column-textarea label="简介" prop="info" link="withdrawSampleDetail?id={id}&pageType=detail"
                                 :show-length="20"/>
     <fast-table-column-switch label="已毕业" prop="graduated" required
@@ -73,10 +75,8 @@
       <!--      <div class="sick-msg">这是一段提示</div>-->
     </template>
     <template #foot="scope">
-      <div>
-        <el-button :size="scope.size" type="primary" @click="expandButton(scope, 'code')" plain>查看源码</el-button>
-        <el-button :size="scope.size" :icon="Link" @click="expandButton(scope, 'doc')">查看文档</el-button>
-      </div>
+      <el-button :size="scope.size" :icon="Link" @click="expandButton(scope, 'code')">查看源码</el-button>
+      <el-button :size="scope.size" :icon="Link" @click="expandButton(scope, 'doc')">查看文档</el-button>
     </template>
   </fast-table>
 </template>
@@ -111,7 +111,7 @@ export default {
         module: 'student', // 配置了这个, 默认分页接口就是: /student/page, 新增接口就是: /student/insert, 其它同理
         enableDblClickEdit: true,
         enableMulti: true,
-        enableIndex: false,
+        enableIndex: true,
         enableColumnFilter: true,
         lazyLoad: false,
         editType: 'inline', // 默认inline
@@ -119,6 +119,7 @@ export default {
         insertable: (scope) => true, // 支持一个返回布尔的函数
         updatable: true,
         deletable: true,
+        exportable: true,
         createTimeField: 'createTime', // 审计字段——创建时间
         // sortField: 'createTime', // 默认为createTimeField值
         // sortDesc: true, // 默认为true
@@ -175,6 +176,9 @@ export default {
           formLabelWidth: 'auto', // 默认为auto
           formLayout: 'id,avatarUrl, name|age|sex, graduated|state|state, loveId|loveName|loveName, info, birthday|luckTime, resumeUrl, createTime', // 弹窗表单布局设置
           quickFilterSpan: 3
+        },
+        beforeReset({query}) {
+          return Promise.resolve()
         },
         /**
          * 典型场景: 追加筛选条件
@@ -280,7 +284,7 @@ export default {
           return Promise.resolve();
         }
       }),
-      loveOption: new FastTableOption({
+      personOption: new FastTableOption({
         module: 'student',
         title: '人员列表',
         conds: [
@@ -440,7 +444,7 @@ export default {
     },
     tryPick(multiple) {
       util.pick({
-        option: this.loveOption,
+        option: this.personOption,
         multiple: multiple,
         dialog: {
           width: '80%'
