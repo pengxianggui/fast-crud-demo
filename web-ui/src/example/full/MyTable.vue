@@ -7,7 +7,7 @@
               @selection-change="handleSelectionChange"
               @select-all="handleSelectAll">
     <template #quickFilter="{size, query}">
-      <el-form-item label="自定义筛选项" style="grid-area: c1;/*grid-column: c2/c3*/">
+      <el-form-item label="自定义筛选项" style="order: 11">
         <el-input :size="size" v-model="query.extra.keyword" placeholder="同时筛选姓名和仰慕者姓名"/>
       </el-form-item>
     </template>
@@ -41,11 +41,12 @@
                               :default-val_q="['1', '2', '3']" :disable-val="['4']"/>
     <fast-table-column-object label="仰慕者" prop="loveId" quick-filter
                               :quick-filter-config="loveIdQuickFilterConfig"
-                              :table-option="personOption" val-key="id" label-key_q="name" :pick-map="{name: 'loveName'}"
+                              :table-option="personOption" val-key="id" label-key_q="name"
+                              :pick-map="{name: 'loveName'}"
                               :multiple_q="true"/>
     <fast-table-column label="仰慕者姓名" prop="loveName"/>
     <fast-table-column-select label="仇人" prop="foeId" quick-filter :options="personOption" width="100"
-                              val-key="id" label-key="name" />
+                              val-key="id" label-key="name"/>
     <fast-table-column-textarea label="简介" prop="info" link="withdrawSampleDetail?id={id}&pageType=detail"
                                 :show-length="20"/>
     <fast-table-column-switch label="已毕业" prop="graduated" required
@@ -311,14 +312,14 @@ export default {
       defaultQueryOfCreatedTime: [monthAgo, now],
       ...staticDict,
       loveIdQuickFilterConfig: {
-        onClick: (model, filter, filtersMap) => {
+        onClick: ({model, filter/*, filters, refs*/}) => {
           if (this.params.enableCascading === true && !util.isEmpty(model.state)) {
             filter.props.tableOption.addCond({col: 'state', opt: 'in', val: model.state})
           } else {
             filter.props.tableOption.removeCond('state')
           }
         },
-        onChange: (val, model, filter, filtersMap) => {
+        onChange: ({val/*, model, filter, filters, refs*/}) => {
           ElMessage.info(`仰慕者快筛项值更新:${val}`)
         }
       }
