@@ -20,7 +20,7 @@
                            :on-remove="handleGalleryRemove"
                            :response-handler="handleGalleryResponseHandle"
                            :on-change="handleGalleryChange"/>
-    <fast-table-column-input label="姓名" prop="name" :filter="0" required :unique="params.enableNameUnique"/>
+    <fast-table-column-input label="姓名" prop="name" :filter="0" required :unique="params.enableNameUnique" :import-unique="true"/>
     <fast-table-column-number label="年龄" prop="age" required :quick-filter="3"
                               :rules="[{type: 'number', min: 16, max: 60, message: '年龄必须在[16,60]之间'}]"
                               :min="16" :max="60"
@@ -37,7 +37,7 @@
       </template>
     </fast-table-column-select>
     <fast-table-column-select label="属国" prop="state" required :quick-filter="true" quick-filter-block
-                              :options="stateOptions" quick-filter-checkbox val-key="code" label-key="name"
+                              :options="stateOptions" :quick-filter-checkbox="true" val-key="code" label-key="name"
                               :default-val_q="['1', '2', '3']" :disable-val="['4']"/>
     <fast-table-column-object label="仰慕者" prop="loveId" quick-filter
                               :quick-filter-config="loveIdQuickFilterConfig"
@@ -47,8 +47,7 @@
     <fast-table-column label="仰慕者姓名" prop="loveName"/>
     <fast-table-column-select label="仇人" prop="foeId" quick-filter :options="personOption" width="100"
                               val-key="id" label-key="name"/>
-    <fast-table-column-textarea label="简介" prop="info" link="withdrawSampleDetail?id={id}&pageType=detail"
-                                :show-length="20"/>
+    <fast-table-column-textarea label="简介" prop="info" :show-length="20"/>
     <fast-table-column-switch label="已毕业" prop="graduated" required
                               active-text="Y" inactive-text="N" quick-filter/>
     <fast-table-column-time-picker label="幸运时刻" prop="luckTime" width="120px" required
@@ -60,6 +59,7 @@
     <fast-table-column-input prop="address" label="地址" min-width="200px"/>
     <fast-table-column-input prop="phone" label="联系电话" min-width="150px"/>
     <fast-table-column-date-picker label="创建时间" prop="createTime" width="200px"
+                                   :importable="false"
                                    :disabled-date_q="(time) => time.getTime() > Date.now()"
                                    type="datetime"
                                    :quick-filter="false" :default-val_q="defaultQueryOfCreatedTime"
@@ -71,6 +71,7 @@
       </template>
     </el-table-column>
     <template #button="scope">
+      <el-button @click="changeLang">changeLang</el-button>
       <el-button :size="scope.size" @click="tryPick(false)">Try Pick</el-button>
       <el-button :size="scope.size" @click="tryPick(true)">Try Pick(多选)</el-button>
       <!--      <div class="sick-msg">这是一段提示</div>-->
@@ -85,7 +86,14 @@
 <script>
 import {h, markRaw} from 'vue'
 import {ElMessage, ElMessageBox} from 'element-plus';
-import {FastTableColumnImg, FastTableColumn, FastTableColumnSelect, FastTableOption, util} from "fast-crud-ui3";
+import {
+  FastTableColumnImg,
+  FastTableColumn,
+  FastTableColumnSelect,
+  FastTableOption,
+  util,
+  setLanguage
+} from "fast-crud-ui3";
 import staticDict from './dict'
 import {Cpu, Link, Plus} from "@element-plus/icons-vue";
 import CodeBox from "@/example/CodeBox.vue";
@@ -176,7 +184,8 @@ export default {
           bodyRowHeight: '45px',
           formLabelWidth: 'auto', // 默认为auto
           formLayout: 'id,avatarUrl, name|age|sex, graduated|state|state, loveId|loveName|loveName, info, birthday|luckTime, resumeUrl, createTime', // 弹窗表单布局设置
-          quickFilterSpan: 3
+          quickFilterSpan: 'auto', // 或者数字代表快筛有几列
+          showQuickFilterBtn: true, // 展示快筛按钮
         },
         beforeReset({query}) {
           return Promise.resolve()
@@ -188,6 +197,7 @@ export default {
          */
         beforeLoad({query}) {
           if (this.params.pageLoadable) {
+            query.params = { p1: 'query1', p2: 'query2'}
             return Promise.resolve();
           }
           this.showMsg('warning', '未勾选【允许加载分页】, 不会分页请求')
@@ -312,20 +322,27 @@ export default {
       defaultQueryOfCreatedTime: [monthAgo, now],
       ...staticDict,
       loveIdQuickFilterConfig: {
-        onClick: ({model, filter/*, filters, refs*/}) => {
+        onClick: ({model, filter, filters}) => {
           if (this.params.enableCascading === true && !util.isEmpty(model.state)) {
             filter.props.tableOption.addCond({col: 'state', opt: 'in', val: model.state})
           } else {
             filter.props.tableOption.removeCond('state')
           }
         },
-        onChange: ({val/*, model, filter, filters, refs*/}) => {
+        onChange: ({val, model, filter, filters, refs}) => {
+          const foeIdFilter = filters['foeId']
+          foeIdFilter.val = null
+          const foeIdRef = refs['foeId']
+          foeIdRef.getOptions(true)
           ElMessage.info(`仰慕者快筛项值更新:${val}`)
         }
       }
     }
   },
   methods: {
+    changeLang() {
+      setLanguage('en')
+    },
     updateOption(key, val, refresh = false) {
       this.tableOption[key] = val;
       if (refresh) {

@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 @Setter
 @TableName("student_sensitive")
 @ApiModel(value = "StudentSensitive对象", description = "学生-敏感信息子表")
-public class StudentSensitive {
-    private Long id;
+public class StudentSensitive extends IdEntity {
+
     @ApiModelProperty("学生id")
     private Long studentId;
 

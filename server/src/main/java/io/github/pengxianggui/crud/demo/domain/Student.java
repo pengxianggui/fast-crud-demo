@@ -1,15 +1,8 @@
 package io.github.pengxianggui.crud.demo.domain;
 
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.List;
-
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.github.pengxianggui.crud.dao.typehandler.FileItemTypeHandler;
 import io.github.pengxianggui.crud.file.FileItem;
 import io.swagger.annotations.ApiModel;
@@ -18,13 +11,16 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.ibatis.type.JdbcType;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
+
 @Getter
 @Setter
 @ApiModel(value = "Student对象", description = "学生")
-public class Student {
-
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+@TableName(value = "student", autoResultMap = true)
+public class Student extends IdEntity {
 
     @ApiModelProperty("头像地址")
     private String avatarUrl;
@@ -55,7 +51,7 @@ public class Student {
     private String loveName;
 
     @ApiModelProperty("仇人id")
-    private String foeId;
+    private Integer foeId;
 
     @ApiModelProperty("简介")
     private String info;

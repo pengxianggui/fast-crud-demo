@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Data
 @JoinMain(Student.class)
-@LeftJoin(value = StudentSensitive.class, on = {@OnCond(field = "studentId", targetField = "id")})
+@LeftJoin(value = StudentSensitive.class, readonly = false, on = {@OnCond(field = "studentId", targetClazz = Student.class, targetField = "id")})
 public class StudentPageVO {
 
     private Integer id;
@@ -56,7 +56,7 @@ public class StudentPageVO {
     private String loveName;
 
     @ApiModelProperty("仇人id")
-    private String foeId;
+    private Integer foeId;
 
     @ApiModelProperty("简介")
     private String info;

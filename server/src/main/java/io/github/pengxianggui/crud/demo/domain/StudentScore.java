@@ -13,8 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @TableName("student_score")
 @ApiModel(value = "StudentScore对象", description = "学生成绩")
-public class StudentScore {
-    private Long id;
+public class StudentScore extends IdEntity {
 
     @ApiModelProperty("学生id")
     private Long studentId;

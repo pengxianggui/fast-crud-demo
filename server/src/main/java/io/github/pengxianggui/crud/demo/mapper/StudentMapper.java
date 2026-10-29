@@ -9,7 +9,7 @@ import io.github.pengxianggui.crud.demo.domain.Student;
  * </p>
  *
  * @author pengxg
- * @since 2025-05-24
+ * @since 2025-02-17
  */
 public interface StudentMapper extends MPJBaseMapper<Student> {
 

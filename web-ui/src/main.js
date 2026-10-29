@@ -13,6 +13,10 @@ app.use(ElementPlus, {
     locale: zhCn
 })
 app.use(FastCrudUI, {
-    $http: http
+    $http: http,
+    i18n: {
+        locale: 'zh-cn',
+        fallbackLocale: 'en'
+    }
 })
 app.mount('#app')
